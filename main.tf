@@ -24,11 +24,6 @@ resource "docker_image" "msg-service-image" {
   keep_locally = true
 }
 
-resource "docker_image" "msg-core-image" {
-  name         = "2022-2-measuresoftgram-core_core"
-  keep_locally = true
-}
-
 
 resource "docker_container" "nginx" {
   name    = "nginx"
@@ -39,13 +34,6 @@ resource "docker_container" "nginx" {
   ports {
     external = 80
     internal = 80
-  }
-}
-
-
-resource "null_resource" "copy_nginx_conf" {
-  provisioner "local-exec" {
-    command = " docker cp ./nginx.conf nginx:/etc/nginx/nginx.conf"
   }
 }
 
@@ -84,43 +72,6 @@ resource "docker_container" "msg-service-load-balance-latest" {
   ports {
     external = 3001
     internal = 80
-  }
-}
-
-
-resource "docker_container" "msg-core-latest" {
-  name    = "msg-core"
-  image   = docker_image.msg-core-image.image_id
-  network_mode = docker_network.example.name
-  must_run = true
-
-  command = [
-    "tail",
-    "-f",
-    "/dev/null"
-  ]
-
-  ports {
-    external = 5000
-    internal = 5000
-  }
-}
-
-resource "docker_container" "msg-core-load-balance-latest" {
-  name    = "msg-core-load-balance"
-  image   = docker_image.msg-core-image.image_id
-  network_mode = docker_network.example.name
-  must_run = true
-
-  command = [
-    "tail",
-    "-f",
-    "/dev/null"
-  ]
-
-  ports {
-    external = 5001
-    internal = 5000
   }
 }
 
