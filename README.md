@@ -20,6 +20,8 @@ Depois de configura o ambiente da sua maquina ou do servidor execulte apenas os 
 
 **Comandos:**
 
+````terraform init```
+
 ```chmod +x ini_infra.sh```
 
 ```./ini_infra.sh```

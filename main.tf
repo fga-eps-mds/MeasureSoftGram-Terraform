@@ -20,7 +20,7 @@ resource "docker_image" "nginx" {
 }
 
 resource "docker_image" "msg-service-image" {
-  name         = "service_service"
+  name         = "francisco1code/2022-2-measuresoftgram-service:latest"
   keep_locally = true
 }
 
@@ -58,7 +58,6 @@ resource "docker_container" "msg-service-latest" {
   command = ["./start_service.sh"]
 
   ports {
-    external = 3000
     internal = 80
   }
 }
@@ -84,7 +83,6 @@ resource "docker_container" "msg-service-load-balance-latest" {
   command = ["./start_service.sh"]
 
   ports {
-    external = 3001
     internal = 80
   }
 }
