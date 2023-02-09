@@ -20,10 +20,9 @@ resource "docker_image" "nginx" {
 }
 
 resource "docker_image" "msg-service-image" {
-  name         = "2022-2-measuresoftgram-service_service"
+  name         = "service_service"
   keep_locally = true
 }
-
 
 resource "docker_container" "nginx" {
   name    = "nginx"
@@ -43,12 +42,20 @@ resource "docker_container" "msg-service-latest" {
   image   = docker_image.msg-service-image.image_id
   network_mode = docker_network.example.name
   must_run = true
-
-  command = [
-    "tail",
-    "-f",
-    "/dev/null"
+  
+  env = [
+    "POSTGRES_HOST=db",
+    "POSTGRES_DB=postgres",
+    "POSTGRES_USER=postgres",
+    "POSTGRES_PORT=5432",
+    "POSTGRES_PASSWORD=postgres",
+    "GITHUB_CLIENT_ID=CL13NT1D",
+    "GITHUB_SECRET=S3CR3T",
+    "DEBUG=TRUE",
+    "CREATE_FAKE_DATA=TRUE"
   ]
+
+  command = ["./start_service.sh"]
 
   ports {
     external = 3000
@@ -62,12 +69,19 @@ resource "docker_container" "msg-service-load-balance-latest" {
   network_mode = docker_network.example.name
   must_run = true
 
-
-  command = [
-    "tail",
-    "-f",
-    "/dev/null"
+  env = [
+    "POSTGRES_HOST=db",
+    "POSTGRES_DB=postgres",
+    "POSTGRES_USER=postgres",
+    "POSTGRES_PORT=5432",
+    "POSTGRES_PASSWORD=postgres",
+    "GITHUB_CLIENT_ID=CL13NT1D",
+    "GITHUB_SECRET=S3CR3T",
+    "DEBUG=TRUE",
+    "CREATE_FAKE_DATA=TRUE"
   ]
+
+  command = ["./start_service.sh"]
 
   ports {
     external = 3001
