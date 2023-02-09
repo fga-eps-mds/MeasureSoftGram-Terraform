@@ -19,6 +19,11 @@ resource "docker_image" "nginx" {
   keep_locally = true
 }
 
+resource "docker_image" "postgres" {
+  name         = "postgres:latest"
+  keep_locally = true
+}
+
 resource "docker_image" "msg-service-image" {
   name         = "francisco1code/2022-2-measuresoftgram-service:latest"
   keep_locally = true
@@ -33,6 +38,25 @@ resource "docker_container" "nginx" {
   ports {
     external = 80
     internal = 80
+  }
+}
+
+resource "docker_container" "postgres" {
+  name    = "db"
+  image   = docker_image.postgres.image_id
+  network_mode = docker_network.example.name
+  must_run = true
+
+  env = [
+    "POSTGRES_DB=postgres",
+    "POSTGRES_USER=postgres",
+    "POSTGRES_PORT=5432",
+    "POSTGRES_PASSWORD=postgres"
+  ]
+
+  ports {
+    external = 5432
+    internal = 5432
   }
 }
 

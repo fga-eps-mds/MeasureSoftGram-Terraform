@@ -12,7 +12,7 @@ Segue abaixo o link da Documentação do repositório
 [Docker](https://docs.docker.com/engine/install/ubuntu/)
 
 
-## Subindo o sercidor
+## Subindo a Infra
 
 **Atenção:** Verifique que todos os pré-requisitos foram resolvidos.
 
@@ -20,8 +20,38 @@ Depois de configura o ambiente da sua maquina ou do servidor execulte apenas os 
 
 **Comandos:**
 
-````terraform init```
 
-```chmod +x ini_infra.sh```
+```terraform init``` (Esse comando é usado apenas na primeira vez)
 
-```./ini_infra.sh```
+```make init```
+
+```make migrate```
+
+
+**Duvidas recorrentes**
+
+**Como que faço para atulaizar?** Execulte o comando make init.
+
+**Não consigo rodar os scripts?** Verifique se você tem o make instalado na maquina e se você está na pasta raiz.
+
+**Refazer a infra do zero?** Use o comando ```terrform destroy``` e repita os passos aenteriores. 
+
+
+
+## Url para acesso local
+ 
+|Descrição | Urls |
+|-----|----|
+|Service |http://localhost/api/v1/|
+|supported-metrics:| http://localhost/api/v1/supported-metrics/,
+supported-measures: | http://localhost/api/v1/supported-measures/,
+supported-subcharacteristics: | http://localhost/api/v1/supported-subcharacteristics/,
+supported-characteristics: | http://localhost/api/v1/supported-characteristics/,
+entity-relationship-tree:|  http://localhost/api/v1/entity-relationship-tree/,
+organizations: | http://localhost/api/v1/organizations/
+
+## Url para acesso em Cloud
+
+Substitua o localhost pelo ip da maquina ou pelo dns da maquina
+
+
