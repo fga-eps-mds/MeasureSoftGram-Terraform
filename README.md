@@ -28,15 +28,6 @@ Depois de configura o ambiente da sua maquina ou do servidor execulte apenas os 
 ```make migrate```
 
 
-**Duvidas recorrentes**
-
-**Como que faço para atulaizar?** Execulte o comando make init.
-
-**Não consigo rodar os scripts?** Verifique se você tem o make instalado na maquina e se você está na pasta raiz.
-
-**Refazer a infra do zero?** Use o comando ```terrform destroy``` e repita os passos aenteriores. 
-
-
 
 ## Url para acesso local
  
@@ -54,4 +45,21 @@ organizations: | http://localhost/api/v1/organizations/
 
 Substitua o localhost pelo ip da maquina ou pelo dns da maquina
 
+
+## Para criar o certificado https
+
+Segue a [documentação](https://github.com/fga-eps-mds/2022-2-MeasureSoftGram-Terraform/blob/main/documentation/https.md) para adicionar o https no projeto em 4 passos.
+
+
+**Atenção:** Lembre de adicionar o ip da maquina na plataforma responsavel pelo seu Dominio.
+
+
+
+## **Duvidas recorrentes sobre o terraform**
+
+**Como que faço para atualizar?** Execulte o comando make init.
+
+**Não consigo rodar os scripts?** Verifique se você tem o make instalado na maquina e se você está na pasta raiz.
+
+**Refazer a infra do zero?** Use o comando ```terrform destroy``` e repita os passos aenteriores. 
 
