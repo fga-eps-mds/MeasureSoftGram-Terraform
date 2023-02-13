@@ -85,29 +85,3 @@ resource "docker_container" "msg-service-latest" {
     internal = 80
   }
 }
-
-resource "docker_container" "msg-service-load-balance-latest" {
-  name    = "msg-service-load-balance"
-  image   = docker_image.msg-service-image.image_id
-  network_mode = docker_network.example.name
-  must_run = true
-
-  env = [
-    "POSTGRES_HOST=db",
-    "POSTGRES_DB=postgres",
-    "POSTGRES_USER=postgres",
-    "POSTGRES_PORT=5432",
-    "POSTGRES_PASSWORD=postgres",
-    "GITHUB_CLIENT_ID=CL13NT1D",
-    "GITHUB_SECRET=S3CR3T",
-    "DEBUG=TRUE",
-    "CREATE_FAKE_DATA=TRUE"
-  ]
-
-  command = ["./start_service.sh"]
-
-  ports {
-    internal = 80
-  }
-}
-
