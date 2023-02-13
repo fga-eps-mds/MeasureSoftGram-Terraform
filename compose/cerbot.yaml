@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+    nginx:
+    container_name: nginx
+    build: ./config/nginx
+    ports:
+        - 80:80
+        - 443:443
+    volumes:
+        - ./config/dhparam:/etc/nginx/dhparam
+        - ./config/certbot/conf/:/etc/nginx/ssl/
+        - ./config/certbot/data:/usr/share/nginx/html/letsencrypt
+
+certbot:
+    container_name: certbot
+    image: certbot/certbot:latest
+    command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email tecnologia@msg.gmail.com --agree-tos --no-eff-email -d msg.com.br
+    volumes:
+        - ./config/certbot/conf/:/etc/letsencrypt
+        - ./config/certbot/logs/:/var/log/letsencrypt
+        - ./config/certbot/data:/usr/share/nginx/html/letsencrypt
+
+networks:
+    default:
+        external:
+            name: frexco
