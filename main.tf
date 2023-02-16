@@ -25,8 +25,34 @@ resource "docker_image" "postgres" {
 }
 
 resource "docker_image" "msg-service-image" {
-  name         = "francisco1code/2022-2-measuresoftgram-service:latest"
+  name         = "test:latest"
   keep_locally = true
+}
+
+resource "docker_image" "front" {
+  name         = "francisco1code/2022-2-measuresoftgram-front:latest"
+  keep_locally = true
+}
+
+
+resource "docker_container" "front" {
+  name    = "front"
+  image   = docker_image.front.image_id
+  network_mode = docker_network.example.name
+  must_run = true
+
+  env = [
+    "SERVICE_URL=${var.SERVICE_URL}",
+    "NEXT_PUBLIC_API_URL=${var.NEXT_PUBLIC_API_URL}",
+    "LOGIN_REDIRECT_URL=${var.LOGIN_REDIRECT_URL}",
+    "GITHUB_CLIENT_ID=${var.GITHUB_CLIENT_ID}",
+    "GITHUB_SECRET=${var.GITHUB_SECRET}"
+  ]
+
+  ports {
+    external = 3000
+    internal = 3000
+  }
 }
 
 resource "docker_container" "nginx" {
@@ -38,25 +64,7 @@ resource "docker_container" "nginx" {
   ports {
     external = 80
     internal = 80
-  }
-}
 
-resource "docker_container" "postgres" {
-  name    = "db"
-  image   = docker_image.postgres.image_id
-  network_mode = docker_network.example.name
-  must_run = true
-
-  env = [
-    "POSTGRES_DB=postgres",
-    "POSTGRES_USER=postgres",
-    "POSTGRES_PORT=5432",
-    "POSTGRES_PASSWORD=postgres"
-  ]
-
-  ports {
-    external = 5432
-    internal = 5432
   }
 }
 
@@ -68,20 +76,45 @@ resource "docker_container" "msg-service-latest" {
   must_run = true
   
   env = [
-    "POSTGRES_HOST=db",
-    "POSTGRES_DB=postgres",
-    "POSTGRES_USER=postgres",
-    "POSTGRES_PORT=5432",
-    "POSTGRES_PASSWORD=postgres",
-    "GITHUB_CLIENT_ID=CL13NT1D",
-    "GITHUB_SECRET=S3CR3T",
+    "POSTGRES_HOST=${var.POSTGRES_HOST}",
+    "POSTGRES_DB=${var.POSTGRES_DB}",
+    "POSTGRES_USER=${var.POSTGRES_USER}",
+    "POSTGRES_PORT=${var.POSTGRES_PORT}",
+    "POSTGRES_PASSWORD=${var.POSTGRES_PASSWORD}",
     "DEBUG=TRUE",
-    "CREATE_FAKE_DATA=TRUE"
+    "CREATE_FAKE_DATA=TRUE",
+    "LOGIN_REDIRECT_URL=${var.LOGIN_REDIRECT_URL}",
+    "GITHUB_CLIENT_ID=${var.GITHUB_CLIENT_ID}",
+    "GITHUB_SECRET=${var.GITHUB_SECRET}"
   ]
 
   command = ["./start_service.sh"]
 
   ports {
     internal = 80
+    external = 8080
   }
 }
+
+resource "docker_container" "postgres" {
+  name    = "db"
+  image   = docker_image.postgres.image_id
+  network_mode = docker_network.example.name
+  must_run = true
+
+  env = [
+    "POSTGRES_HOST=${var.POSTGRES_HOST}",
+    "POSTGRES_DB=${var.POSTGRES_DB}",
+    "POSTGRES_USER=${var.POSTGRES_USER}",
+    "POSTGRES_PORT=${var.POSTGRES_PORT}",
+    "POSTGRES_PASSWORD=${var.POSTGRES_PASSWORD}"
+  ]
+
+  ports {
+    external = 5432
+    internal = 5555
+  }
+}
+
+
+
